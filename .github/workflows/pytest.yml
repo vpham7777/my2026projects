@@ -19,7 +19,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       # 3. Install your project dependencies from requirements.txt
       - name: Install dependencies
@@ -31,6 +31,12 @@ jobs:
       - name: Install Playwright Browsers
         run: playwright install --with-deps
 
-      # 5. Run your test files
+      # 5 ADDED THIS STEP: Start Flask in the background and wait 3 seconds for it to boot up
+      - name: Start Flask App
+        run: |
+          flask run &
+          sleep 3
+
+      # 6. Run your test files
       - name: Run tests with Pytest
         run: pytest
