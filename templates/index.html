@@ -1,0 +1,96 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Welcome to the Sandbox Shop</h1>
+
+<!-- Authentication Form Practice Section -->
+<section id="auth-section">
+  <h2>Customer Login</h2>
+  <form action="/login" method="POST" id="login-form">
+    <div>
+      <label id="user-label" for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        placeholder="Enter username"
+        data-testid="username-input"
+        required
+      />
+    </div>
+    <div>
+      <label id="pass-label" for="password">Password:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Enter password"
+        data-testid="password-input"
+        required
+      />
+    </div>
+    <button type="submit" id="login-btn" data-testid="submit-login">
+      Log In
+    </button>
+  </form>
+</section>
+
+<hr />
+
+<!-- Product Catalog Interaction Section (3x3 Table Layout) -->
+<section id="catalog-section">
+  <h2>Product Catalog</h2>
+  <table border="1" id="product-table">
+    <thead>
+      <tr>
+        <th>Product Image & Name</th>
+        <th>Price & Availability</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in products %}
+      <tr class="product-row" data-id="{{ item.id }}">
+        <!-- Cell 1: Image and Label element -->
+        <td>
+          <img
+            src="https://placeholder.com"
+            alt="{{ item.name }} Image"
+            class="product-img"
+          />
+          <span class="product-name" label-for="prod-{{ item.id }}"
+            >{{ item.name }}</span
+          >
+        </td>
+        <!-- Cell 2: Static values -->
+        <td>
+          <span class="price" data-testid="price-{{ item.id }}"
+            >${{ item.price }}</span
+          >
+          |
+          <span class="stock-badge">{{ item.stock }}</span>
+        </td>
+        <!-- Cell 3: Live Input and Action Buttons -->
+        <td>
+          <label for="qty-{{ item.id }}">Qty:</label>
+          <input
+            type="number"
+            id="qty-{{ item.id }}"
+            value="1"
+            min="1"
+            max="10"
+            style="width: 40px"
+            data-testid="qty-input-{{ item.id }}"
+          />
+          <button
+            class="add-to-cart-btn"
+            data-testid="add-btn-{{ item.id }}"
+            onclick="alert('Added ' + document.getElementById('qty-{{ item.id }}').value + ' item(s) to your cart!')"
+          >
+            Add to Cart
+          </button>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
