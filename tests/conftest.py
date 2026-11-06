@@ -1,5 +1,6 @@
 import multiprocessing
 import time
+import os
 import pytest
 from app import app
 
@@ -26,8 +27,10 @@ def flask_server():
   proc.terminate()
   proc.join()
 
-
 @pytest.fixture(scope="session")
 def base_url():
-  """Provides the standard home page URL to our test functions."""
-  return "http://127.0.0.1:5000"
+    """Provides the home page URL, dynamically switching ports for local vs CI/CD."""
+    # If running on GitHub Actions, use port 8000. Otherwise, default to 5000.
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+      return "http://127.0.0.1:8000"
+    return "http://127.0.0.1:5000"
